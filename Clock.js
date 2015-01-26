@@ -46,8 +46,7 @@
 	}
 	ClockManager.prototype = {
 		"create": function( config ){
-			var clock = new Clock( config );
-			return clock;
+			return new Clock( config );
 		},
 		"constructor": ClockManager,
 		"hook": function( clock ){
