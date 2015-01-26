@@ -25,6 +25,10 @@
 	        };
 	}());
 
+	/**
+	 * ClockManager constructor
+	 * There can only be on
+	 */
 	function ClockManager(){
 		var frame = null;
 		var self = this;
@@ -45,22 +49,42 @@
 		frame = requestAnimationFrame( this._hook );
 	}
 	ClockManager.prototype = {
+
+		/**
+		 * Creates a clock
+		 * @param  {Object} config 
+		 * @return {Clock}        
+		 */
 		"create": function( config ){
 			return new Clock( config );
 		},
+
 		"constructor": ClockManager,
+
+		/**
+		 * Hooks a clock into the managers animationFrame loop
+		 * @param  {Clock} clock 
+		 */
 		"hook": function( clock ){
 			this.clocks.push( clock );
 		},
+
+		/**
+		 * Removes a clock from the managers animationFrame loop
+		 * @param  {Clock} clock 
+		 * @return {Boolean}       Successful or not?
+		 */
 		"unhook": function( clock ){
 			var len = this.clocks.length;
 			while( len-- ){
 				if( this.clocks[ len ] === clock ){
 					this.clocks.splice( len, 1 );
-					return;
+					return true;
 				}
 			}
+			return false;
 		}
+
 	};
 	var ClockManager = namespace.ClockManager = new ClockManager();
 
