@@ -31,13 +31,15 @@
 		this.clocks = [];
 		var i = -1;
 		var len = 0;
+		var now;
 		this._hook = function(){
 			frame = requestAnimationFrame( self._hook );
 			if( self.clocks.length === 0 ) return;
 			i = -1;
 			len = self.clocks.length;
+			now = new Date();
 			while( ++i < len ){
-				self.clocks[ i ]._hook();
+				self.clocks[ i ]._hook( now );
 			}
 		};
 		frame = requestAnimationFrame( this._hook );
@@ -77,16 +79,12 @@
 		 * These variables we use in the animation frame so rather than constantly
 		 * making new ones, we'll use store them here.
 		 */
-		var now = null;
 		var duration = null;
 		var delta = 0;
 		/**
 		 */
 		
-		// this._frameId = null;
-		this._hook = function(){
-			// self._frameId = requestAnimationFrame( self._hook );
-			now = new Date();
+		this._hook = function( now ){
 			delta = now.getTime() - self._lastFrame.getTime();
 			if( self._interval === null ||
 				 	self._interval <= delta ){
@@ -143,15 +141,12 @@
 				this._startTime = this._lastFrame = new Date();
 			}
 			ClockManager.hook( this );
-			// this._frameId = requestAnimationFrame( this._hook );
 		},
 
 		/**
 		 * Stops the clock ticking
 		 */
 		"stop": function(){
-			// cancelAnimationFrame( this._frameId );
-			// this._frameId = null;
 			ClockManager.unhook( this );
 			this._lastFrame = null;
 			this._startTime = null;
