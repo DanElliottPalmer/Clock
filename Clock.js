@@ -34,17 +34,27 @@
 	function Clock( _config ){
 		var self = this;
 		var config = _config || {};
+
+		/**
+		 * These variables we use in the animation frame so rather than constantly
+		 * making new ones, we'll use store them here.
+		 */
 		var now = null;
 		var duration = null;
+		var delta = 0;
+		/**
+		 */
+		
 		this._frameId = null;
 		this._hook = function(){
 			self._frameId = requestAnimationFrame( self._hook );
 			now = new Date();
+			delta = now.getTime() - self._lastFrame.getTime();
 			if( self._interval === null ||
-				 	self._interval <= now.getTime() - self._lastFrame.getTime() ){
+				 	self._interval <= delta ){
 				duration = now.getTime() - self._startTime.getTime();
 				self._lastFrame = now;
-				self.trigger("tick", self._startTime, now, duration);
+				self.trigger("tick", self._startTime, now, duration, delta);
 			}	
 		};
 		this._interval = config.interval >>> 0 || null;
