@@ -25,6 +25,44 @@
 	        };
 	}());
 
+	function ClockManager(){
+		var frame = null;
+		var self = this;
+		this.clocks = [];
+		var i = -1;
+		var len = 0;
+		this._hook = function(){
+			frame = requestAnimationFrame( self._hook );
+			if( self.clocks.length === 0 ) return;
+			i = -1;
+			len = self.clocks.length;
+			while( ++i < len ){
+				self.clocks[ i ]._hook();
+			}
+		};
+		frame = requestAnimationFrame( this._hook );
+	}
+	ClockManager.prototype = {
+		"create": function( config ){
+			var clock = new Clock( config );
+			return clock;
+		},
+		"constructor": ClockManager,
+		"hook": function( clock ){
+			this.clocks.push( clock );
+		},
+		"unhook": function( clock ){
+			var len = this.clocks.length;
+			while( len-- ){
+				if( this.clocks[ len ] === clock ){
+					this.clocks.splice( len, 1 );
+					return;
+				}
+			}
+		}
+	};
+	var ClockManager = namespace.ClockManager = new ClockManager();
+
 	/**
 	 * Clock constructor
 	 * @param {Object} _config Configuration
@@ -45,9 +83,9 @@
 		/**
 		 */
 		
-		this._frameId = null;
+		// this._frameId = null;
 		this._hook = function(){
-			self._frameId = requestAnimationFrame( self._hook );
+			// self._frameId = requestAnimationFrame( self._hook );
 			now = new Date();
 			delta = now.getTime() - self._lastFrame.getTime();
 			if( self._interval === null ||
@@ -104,15 +142,17 @@
 			if( this._startTime === null ){
 				this._startTime = this._lastFrame = new Date();
 			}
-			this._frameId = requestAnimationFrame( this._hook );
+			ClockManager.hook( this );
+			// this._frameId = requestAnimationFrame( this._hook );
 		},
 
 		/**
 		 * Stops the clock ticking
 		 */
 		"stop": function(){
-			cancelAnimationFrame( this._frameId );
-			this._frameId = null;
+			// cancelAnimationFrame( this._frameId );
+			// this._frameId = null;
+			ClockManager.unhook( this );
 			this._lastFrame = null;
 			this._startTime = null;
 		},
