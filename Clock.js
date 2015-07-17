@@ -1,4 +1,12 @@
-(function( namespace ){
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory();
+    } else {
+        root.returnExports = factory();
+  }
+}(this, function () {
 
 	(function() {
 	    var lastTime = 0;
@@ -86,7 +94,7 @@
 		}
 
 	};
-	var ClockManager = namespace.ClockManager = new ClockManager();
+	var ClockManager = new ClockManager();
 
 	/**
 	 * Clock constructor
@@ -197,6 +205,9 @@
 		}
 	};
 
-	namespace.Clock = Clock;
+	return {
+        "Clock": Clock,
+        "ClockManager": ClockManager
+    };
 
-})( window );
+}));
