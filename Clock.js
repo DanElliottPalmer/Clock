@@ -4,7 +4,7 @@
     } else if (typeof exports === 'object') {
         module.exports = factory();
     } else {
-        root.returnExports = factory();
+        root.Clock = factory();
   }
 }(this, function () {
 
@@ -60,8 +60,8 @@
 
 		/**
 		 * Creates a clock
-		 * @param  {Object} config 
-		 * @return {Clock}        
+		 * @param  {Object} config
+		 * @return {Clock}
 		 */
 		"create": function( config ){
 			return new Clock( config );
@@ -71,7 +71,7 @@
 
 		/**
 		 * Hooks a clock into the managers animationFrame loop
-		 * @param  {Clock} clock 
+		 * @param  {Clock} clock
 		 */
 		"hook": function( clock ){
 			this.clocks.push( clock );
@@ -79,7 +79,7 @@
 
 		/**
 		 * Removes a clock from the managers animationFrame loop
-		 * @param  {Clock} clock 
+		 * @param  {Clock} clock
 		 * @return {Boolean}       Successful or not?
 		 */
 		"unhook": function( clock ){
@@ -114,7 +114,7 @@
 		var delta = 0;
 		/**
 		 */
-		
+
 		this._hook = function( now ){
 			delta = now.getTime() - self._lastFrame.getTime();
 			if( self._interval === null ||
@@ -122,7 +122,7 @@
 				duration = now.getTime() - self._startTime.getTime();
 				self._lastFrame = now;
 				self.trigger("tick", self._startTime, now, duration, delta);
-			}	
+			}
 		};
 		this._interval = config.interval >>> 0 || null;
 		this._lastFrame = config.startTime || null;
@@ -136,8 +136,8 @@
 
 		/**
 		 * Removes events from the clock
-		 * @param  {String} type    
-		 * @param  {Function} handler 
+		 * @param  {String} type
+		 * @param  {Function} handler
 		 */
 		"off": function( type, handler ){
 			if( !this._listeners.hasOwnProperty( type ) ||
@@ -154,8 +154,8 @@
 
 		/**
 		 * Adds events to the clock
-		 * @param  {String} type    
-		 * @param  {Function} handler 
+		 * @param  {String} type
+		 * @param  {Function} handler
 		 */
 		"on": function( type, handler ){
 			if( !this._listeners.hasOwnProperty( type ) ){
