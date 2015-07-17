@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-	<head>  
+	<head>
 		<meta charset="utf-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -15,14 +15,14 @@
 		<script src="Clock.js"></script>
 		<script>
 
-			var clock1 = new Clock();
+			var clock1 = new Clock.Clock();
 			var domclock1 = document.getElementById("clock1");
 			clock1.on("tick", function onClock1Tick( start, now, duration ){
 				domclock1.innerHTML = duration/1000 + " seconds";
 			});
 			clock1.start();
 
-			var clock2 = new Clock({
+			var clock2 = new Clock.Clock({
 				"interval": 1000
 			});
 			var domclock2 = document.getElementById("clock2");
@@ -31,7 +31,7 @@
 			});
 			clock2.start();
 
-			var clock3 = new Clock({
+			var clock3 = new Clock.Clock({
 				"startTime": new Date( 2015, 0, 1 )
 			});
 			var domclock3 = document.getElementById("clock3");
@@ -40,7 +40,7 @@
 			});
 			clock3.start();
 
-			var clock4 = new Clock({
+			var clock4 = new Clock.Clock({
 				"startTime": new Date( 2015, 0, 1 )
 			});
 			var domclock4 = document.getElementById("clock4");
